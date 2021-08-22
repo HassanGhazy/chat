@@ -12,6 +12,3 @@ This is the third progect was cerated with Gaza Sky Geeks
 
 ![screen 2](https://github.com/HassanGhazy/chat/blob/master/snapshot/02.JPG?raw=true)
 
-![screen 3](https://github.com/HassanGhazy/chat/blob/master/snapshot/03.JPG?raw=true)
-
-![screen 4](https://github.com/HassanGhazy/chat/blob/master/snapshot/04.JPG?raw=true)

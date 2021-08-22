@@ -28,57 +28,56 @@ class AuthHelper {
     return userCredential!;
   }
 
-  Future<bool> signin(String email, String password) async {
+  Future<UserCredential> signin(String email, String password) async {
     try {
-      await firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential userCredential = await firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         CustomDialoug.customDialoug
             .showCustomDialoug('No user found for that email.');
-        return false;
       } else if (e.code == 'wrong-password') {
         CustomDialoug.customDialoug
             .showCustomDialoug('Wrong password provided for that user.');
-        return false;
       }
     }
-    return true;
+    return userCredential!;
   }
 
-  Future<bool> signinWithPhone(String phoneNumber) async {
-    try {
-      await firebaseAuth.verifyPhoneNumber(
-        phoneNumber: phoneNumber,
-        verificationCompleted: (PhoneAuthCredential credential) async =>
-            await firebaseAuth.signInWithCredential(credential),
-        verificationFailed: (FirebaseAuthException e) {
-          print(e);
-          print(e.credential);
-          if (e.code == 'invalid-phone-number') {
-            CustomDialoug.customDialoug
-                .showCustomDialoug('The provided phone number is not valid.');
-          }
-        },
-        timeout: const Duration(seconds: 60),
-        codeSent: (String verificationId, int? resendToken) async {
-          String smsCode = '123456';
-          PhoneAuthCredential credential = PhoneAuthProvider.credential(
-              verificationId: verificationId, smsCode: smsCode);
-          await firebaseAuth.signInWithCredential(credential);
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          // Auto-resolution timed ou,
-        },
-      );
-    } on FirebaseAuthException catch (e) {
-      print(e);
-      print(e.credential);
-      print(e.code);
-      return false;
-    }
-    return true;
-  }
+  // Future<bool> signinWithPhone(String phoneNumber) async {
+  //   try {
+  //     await firebaseAuth.verifyPhoneNumber(
+  //       phoneNumber: phoneNumber,
+  //       verificationCompleted: (PhoneAuthCredential credential) async =>
+  //           await firebaseAuth.signInWithCredential(credential),
+  //       verificationFailed: (FirebaseAuthException e) {
+  //         print(e);
+  //         print(e.credential);
+  //         if (e.code == 'invalid-phone-number') {
+  //           CustomDialoug.customDialoug
+  //               .showCustomDialoug('The provided phone number is not valid.');
+  //         }
+  //       },
+  //       timeout: const Duration(seconds: 60),
+  //       codeSent: (String verificationId, int? resendToken) async {
+  //         String smsCode = '123456';
+  //         PhoneAuthCredential credential = PhoneAuthProvider.credential(
+  //             verificationId: verificationId, smsCode: smsCode);
+  //         await firebaseAuth.signInWithCredential(credential);
+  //       },
+  //       codeAutoRetrievalTimeout: (String verificationId) {
+  //         // Auto-resolution timed ou,
+  //       },
+  //     );
+  //   } on FirebaseAuthException catch (e) {
+  //     print(e);
+  //     print(e.credential);
+  //     print(e.code);
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   Future<void> resetPassword(String email) async {
     await firebaseAuth.sendPasswordResetEmail(email: email);

@@ -1,8 +1,9 @@
 import 'package:chat/helpers/app_router.dart';
 import 'package:chat/helpers/custom_dialoug.dart';
 import 'package:chat/helpers/firestore_helper.dart';
+import 'package:chat/helpers/shared.dart';
 import 'package:chat/ui/auth/loginPage.dart';
-import 'package:chat/ui/auth/modals/register_request.dart';
+import 'package:chat/ui/auth/modals/user.dart';
 import 'package:chat/ui/home/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -15,8 +16,9 @@ class AuthProvider with ChangeNotifier {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController country = TextEditingController();
-  TextEditingController phoneNumber = TextEditingController();
-  TextEditingController smsCode = TextEditingController();
+  // TextEditingController phoneNumber = TextEditingController();
+  // TextEditingController smsCode = TextEditingController();
+  // String uid = "";
   bool loading = false;
   resetControllers() {
     email.clear();
@@ -30,15 +32,15 @@ class AuthProvider with ChangeNotifier {
 
       UserCredential userCredential =
           await AuthHelper.authHelper.signup(email.text, password.text);
-      RegisterRequest registerRequest = RegisterRequest(
+      UserModal user = UserModal(
         id: userCredential.user!.uid,
         email: email.text,
-        password: password.text,
         firstName: firstName.text,
         lastName: lastName.text,
         country: country.text,
       );
-      await FireStoreHelper.fireStoreHelper.addUserToFirestore(registerRequest);
+      print('firstName ${firstName.text}');
+      await FireStoreHelper.fireStoreHelper.addUserToFirestore(user);
       await AuthHelper.authHelper.verifyEmail();
       await AuthHelper.authHelper.logoutEmail();
       AppRouter.route.removeUntilScreen(LoginPage());
@@ -52,30 +54,30 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> login() async {
-    // if (phoneNumber.text != "" && email.text == "" && password.text == "") {
-    //   await loginWithPhone();
-    // } else {
     if (email.text == "" || password.text == "") {
       CustomDialoug.customDialoug.showCustomDialoug('some of fields is empty');
     } else {
       loading = true;
       notifyListeners();
-      bool exist =
+      UserCredential user =
           await AuthHelper.authHelper.signin(email.text, password.text);
+
+      // uid = user.user!.uid;
       bool isVerifiedEmail = AuthHelper.authHelper.checkEmailVerification();
-      if (isVerifiedEmail) {
-        AppRouter.route.removeUntilScreen(HomePage("Email"));
-      } else {
-        if (exist)
-          CustomDialoug.customDialoug.showCustomDialoug(
-              'You have to verify your email, press ok to send another email',
-              sendVericiafion);
-      }
+      // if (isVerifiedEmail) {
+      await FireStoreHelper.fireStoreHelper
+          .getUserFromFirestore(user.user!.uid);
+      SpHelper.spHelper.saveData("userId", user.user!.uid);
+      AppRouter.route.removeUntilScreen(HomePage("Email"));
+      // } else {
+      //   CustomDialoug.customDialoug.showCustomDialoug(
+      //       'You have to verify your email, press ok to send another email',
+      //       sendVericiafion);
+      // }
     }
     loading = false;
     notifyListeners();
     resetControllers();
-    // }
   }
 
   // Future<void> loginWithPhone() async {
@@ -123,17 +125,18 @@ class AuthProvider with ChangeNotifier {
   }
 
   logoutEmail() async {
-    AuthHelper.authHelper.logoutEmail();
+    await AuthHelper.authHelper.logoutEmail();
+    await SpHelper.spHelper.removeKey("userId");
     AppRouter.route.removeUntilNamed(LoginPage.routeName);
   }
 
   logoutGoogle() async {
-    AuthHelper.authHelper.logoutGoogle();
+    await AuthHelper.authHelper.logoutGoogle();
     AppRouter.route.removeUntilNamed(LoginPage.routeName);
   }
 
   logoutFacebook() async {
-    AuthHelper.authHelper.logoutFacebook();
+    await AuthHelper.authHelper.logoutFacebook();
     AppRouter.route.removeUntilNamed(LoginPage.routeName);
   }
 }

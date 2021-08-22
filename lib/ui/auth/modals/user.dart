@@ -1,16 +1,14 @@
 import 'package:flutter/cupertino.dart';
 
-class RegisterRequest {
+class UserModal {
   String? id;
   String? email;
-  String? password;
   String? firstName;
   String? lastName;
   String? country;
-  RegisterRequest({
+  UserModal({
     @required this.id,
     @required this.email,
-    @required this.password,
     @required this.firstName,
     @required this.lastName,
     @required this.country,
@@ -20,10 +18,17 @@ class RegisterRequest {
     return {
       'id': this.id,
       'email': this.email,
-      'password': this.password,
-      'firstNam': this.firstName,
+      'firstName': this.firstName,
       'lastName': this.lastName,
       'country': this.country,
     };
+  }
+
+  UserModal.fromMap(Map<String, dynamic> map) {
+    this.id = map['id'];
+    this.email = map['email'];
+    this.firstName = map['firstName'];
+    this.lastName = map['lastName'];
+    this.country = map['country'];
   }
 }

@@ -1,5 +1,7 @@
 import 'package:chat/helpers/app_router.dart';
+import 'package:chat/helpers/shared.dart';
 import 'package:chat/provider/auth_provider.dart';
+import 'package:chat/provider/user_provider.dart';
 import 'package:chat/ui/auth/loginPage.dart';
 // import 'package:chat/ui/auth/phone_sign_in_page.dart';
 import 'package:chat/ui/auth/reset_password_page.dart';
@@ -11,8 +13,23 @@ import 'package:provider/provider.dart';
 
 import 'ui/auth/welcomePage.dart';
 
-void main() => runApp(ChangeNotifierProvider<AuthProvider>(
-    create: (_) => AuthProvider(), child: MyApp()));
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SpHelper.spHelper.initSharedPreferences();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthProvider>(
+          create: (_) => AuthProvider(),
+        ),
+        ChangeNotifierProvider<UserProvider>(
+          create: (_) => UserProvider(),
+        )
+      ],
+      child: MyApp(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -53,7 +70,9 @@ class MyApp extends StatelessWidget {
               ),
             );
           }
-          return WelcomePage();
+          return SpHelper.spHelper.getData("userId") == null
+              ? WelcomePage()
+              : HomePage("Email");
         },
       ),
     );
