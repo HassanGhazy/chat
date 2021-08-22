@@ -10,7 +10,7 @@ This is the third progect was cerated with Gaza Sky Geeks
 
 ![screen 1](https://github.com/HassanGhazy/chat/blob/master/snapshot/01.JPG?raw=true)
 
-![screen 2](https://github.com/HassanGhazy/chat/blob/master/snapshot/02.JPGraw=true)
+![screen 2](https://github.com/HassanGhazy/chat/blob/master/snapshot/02.JPG?raw=true)
 
 ![screen 3](https://github.com/HassanGhazy/chat/blob/master/snapshot/03.JPG?raw=true)
 
