@@ -16,6 +16,9 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _email = TextEditingController();
+  final TextEditingController _firstName = TextEditingController();
+  final TextEditingController _lastName = TextEditingController();
+  final TextEditingController _country = TextEditingController();
   final TextEditingController _password = TextEditingController();
   @override
   void dispose() {
@@ -48,12 +51,20 @@ class _SignUpPageState extends State<SignUpPage> {
                     const WelcomeTextWidget(const Color(0xffe46b10)),
                     const SizedBox(height: 50),
                     CustomTextField("Email", textEditingController: _email),
+                    CustomTextField("First Name",
+                        textEditingController: _firstName),
+                    CustomTextField("Last Name",
+                        textEditingController: _lastName),
+                    CustomTextField("Country", textEditingController: _country),
                     CustomTextField("Password",
                         isPassword: true, textEditingController: _password),
                     const SizedBox(height: 20),
                     RegisterAndLoginButton(
                       email: _email,
                       password: _password,
+                      firstName: _firstName,
+                      lastName: _lastName,
+                      country: _country,
                       // phoneNumber: TextEditingController(),
                       title: 'Register Now',
                       action: 2,

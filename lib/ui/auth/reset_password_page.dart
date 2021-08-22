@@ -35,6 +35,9 @@ class ResetPassword extends StatelessWidget {
                   RegisterAndLoginButton(
                     email: _email,
                     password: TextEditingController(),
+                    firstName: TextEditingController(),
+                    lastName: TextEditingController(),
+                    country: TextEditingController(),
                     // phoneNumber: TextEditingController(),
                     title: 'Reset Password',
                     action: 3,

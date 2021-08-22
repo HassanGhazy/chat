@@ -1,7 +1,10 @@
 import 'package:chat/helpers/app_router.dart';
 import 'package:chat/helpers/custom_dialoug.dart';
+import 'package:chat/helpers/firestore_helper.dart';
 import 'package:chat/ui/auth/loginPage.dart';
+import 'package:chat/ui/auth/modals/register_request.dart';
 import 'package:chat/ui/home/home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../helpers/auth_helper.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +12,9 @@ import 'package:flutter/material.dart';
 class AuthProvider with ChangeNotifier {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  TextEditingController country = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();
   TextEditingController smsCode = TextEditingController();
   bool loading = false;
@@ -21,7 +27,18 @@ class AuthProvider with ChangeNotifier {
     try {
       loading = true;
       notifyListeners();
-      await AuthHelper.authHelper.signup(email.text, password.text);
+
+      UserCredential userCredential =
+          await AuthHelper.authHelper.signup(email.text, password.text);
+      RegisterRequest registerRequest = RegisterRequest(
+        id: userCredential.user!.uid,
+        email: email.text,
+        password: password.text,
+        firstName: firstName.text,
+        lastName: lastName.text,
+        country: country.text,
+      );
+      await FireStoreHelper.fireStoreHelper.addUserToFirestore(registerRequest);
       await AuthHelper.authHelper.verifyEmail();
       await AuthHelper.authHelper.logoutEmail();
       AppRouter.route.removeUntilScreen(LoginPage());

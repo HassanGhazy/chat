@@ -7,17 +7,25 @@ class RegisterAndLoginButton extends StatelessWidget {
     Key? key,
     required TextEditingController email,
     required TextEditingController password,
-    // required TextEditingController phoneNumber,
+    required TextEditingController firstName,
+    required TextEditingController lastName,
+    required TextEditingController country,
     required String title,
     required int action,
   })  : _email = email,
         _password = password,
         // _phoneNumber = phoneNumber,
         _title = title,
+        _firstName = firstName,
+        _lastName = lastName,
+        _country = country,
         _action = action,
         super(key: key);
 
   final TextEditingController _email;
+  final TextEditingController _firstName;
+  final TextEditingController _lastName;
+  final TextEditingController _country;
   final TextEditingController _password;
   // final TextEditingController _phoneNumber;
   final String _title;
@@ -29,6 +37,9 @@ class RegisterAndLoginButton extends StatelessWidget {
         onTap: () {
           provider.email = _email;
           provider.password = _password;
+          provider.firstName = _firstName;
+          provider.lastName = _lastName;
+          provider.country = _country;
           // provider.phoneNumber = _phoneNumber;
           if (_action == 1) {
             provider.login();
