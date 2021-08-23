@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   final String title;
   final bool isPassword;
+  final bool isEnable;
   final TextEditingController? textEditingController;
   // final TextEditingController? password;
   const CustomTextField(this.title,
-      {this.isPassword = false, this.textEditingController});
+      {this.isPassword = false,
+      this.isEnable = true,
+      this.textEditingController});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +25,9 @@ class CustomTextField extends StatelessWidget {
           const SizedBox(height: 10),
           TextField(
             obscureText: isPassword,
+            enabled: isEnable,
             controller: textEditingController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
                 border: InputBorder.none,
                 fillColor: Color(0xfff3f3f4),
                 filled: true),

@@ -4,8 +4,7 @@ import 'package:chat/ui/auth/Widget/back_button_widget.dart';
 import 'package:chat/ui/auth/Widget/bezierContainer.dart';
 import 'package:chat/ui/auth/Widget/button_social.dart';
 import 'package:chat/ui/auth/Widget/custom_divider.dart';
-import 'package:chat/ui/auth/Widget/custom_text_field.dart';
-// import 'package:chat/ui/auth/Widget/facebook_button.dart';
+import 'package:chat/widgets/custom_text_field.dart';
 import 'package:chat/ui/auth/Widget/register_and_login_button.dart';
 import 'package:chat/ui/auth/Widget/toggle_account.dart';
 import 'package:chat/ui/auth/Widget/welcome_widget.dart';
@@ -64,9 +63,9 @@ class _LoginPageState extends State<LoginPage> {
                   RegisterAndLoginButton(
                     email: _email,
                     password: _password,
-                    firstName: TextEditingController(),
-                    lastName: TextEditingController(),
-                    country: TextEditingController(),
+                    // firstName: TextEditingController(),
+                    // lastName: TextEditingController(),
+                    // country: TextEditingController(),
                     // phoneNumber: _phone,
                     title: 'Login',
                     action: 1,
@@ -85,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                               color: Color(0xff000000))),
                     ),
                   ),
-                  CustomDivider(),
+                  const CustomDivider(),
                   GestureDetector(
                     child: ButtonSocail(
                       text: "Sign in with Google",

@@ -1,7 +1,7 @@
 // import 'package:chat/helpers/app_router.dart';
 import 'package:chat/ui/auth/Widget/back_button_widget.dart';
 import 'package:chat/ui/auth/Widget/bezierContainer.dart';
-import 'package:chat/ui/auth/Widget/custom_text_field.dart';
+import 'package:chat/widgets/custom_text_field.dart';
 import 'package:chat/ui/auth/Widget/register_and_login_button.dart';
 import 'package:chat/ui/auth/Widget/toggle_account.dart';
 import 'package:chat/ui/auth/Widget/welcome_widget.dart';
@@ -24,6 +24,9 @@ class _SignUpPageState extends State<SignUpPage> {
   void dispose() {
     _email.dispose();
     _password.dispose();
+    _firstName.dispose();
+    _lastName.dispose();
+    _country.dispose();
     super.dispose();
   }
 
@@ -51,20 +54,20 @@ class _SignUpPageState extends State<SignUpPage> {
                     const WelcomeTextWidget(const Color(0xffe46b10)),
                     const SizedBox(height: 50),
                     CustomTextField("Email", textEditingController: _email),
-                    CustomTextField("First Name",
-                        textEditingController: _firstName),
-                    CustomTextField("Last Name",
-                        textEditingController: _lastName),
-                    CustomTextField("Country", textEditingController: _country),
+                    // CustomTextField("First Name",
+                    // textEditingController: _firstName),
+                    // CustomTextField("Last Name",
+                    // textEditingController: _lastName),
+                    // CustomTextField("Country", textEditingController: _country),
                     CustomTextField("Password",
                         isPassword: true, textEditingController: _password),
                     const SizedBox(height: 20),
                     RegisterAndLoginButton(
                       email: _email,
                       password: _password,
-                      firstName: _firstName,
-                      lastName: _lastName,
-                      country: _country,
+                      // firstName: _firstName,
+                      // lastName: _lastName,
+                      // country: _country,
                       // phoneNumber: TextEditingController(),
                       title: 'Register Now',
                       action: 2,

@@ -1,6 +1,6 @@
 import 'package:chat/ui/auth/Widget/back_button_widget.dart';
 import 'package:chat/ui/auth/Widget/bezierContainer.dart';
-import 'package:chat/ui/auth/Widget/custom_text_field.dart';
+import 'package:chat/widgets/custom_text_field.dart';
 import 'package:chat/ui/auth/Widget/register_and_login_button.dart';
 import 'package:flutter/material.dart';
 
@@ -35,9 +35,9 @@ class ResetPassword extends StatelessWidget {
                   RegisterAndLoginButton(
                     email: _email,
                     password: TextEditingController(),
-                    firstName: TextEditingController(),
-                    lastName: TextEditingController(),
-                    country: TextEditingController(),
+                    // firstName: TextEditingController(),
+                    // lastName: TextEditingController(),
+                    // country: TextEditingController(),
                     // phoneNumber: TextEditingController(),
                     title: 'Reset Password',
                     action: 3,

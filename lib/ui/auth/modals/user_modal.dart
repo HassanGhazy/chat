@@ -1,3 +1,5 @@
+// import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 
 class UserModal {
@@ -6,12 +8,14 @@ class UserModal {
   String? firstName;
   String? lastName;
   String? country;
+  String? photoPath;
   UserModal({
     @required this.id,
     @required this.email,
     @required this.firstName,
     @required this.lastName,
     @required this.country,
+    @required this.photoPath,
   });
 
   toMap() {
@@ -21,6 +25,7 @@ class UserModal {
       'firstName': this.firstName,
       'lastName': this.lastName,
       'country': this.country,
+      'photoPath': this.photoPath,
     };
   }
 
@@ -30,5 +35,6 @@ class UserModal {
     this.firstName = map['firstName'];
     this.lastName = map['lastName'];
     this.country = map['country'];
+    this.photoPath = map['photoPath'];
   }
 }

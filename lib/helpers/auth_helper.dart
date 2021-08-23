@@ -1,4 +1,6 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:chat/helpers/custom_dialoug.dart';
+import 'package:chat/helpers/shared.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -8,19 +10,21 @@ class AuthHelper {
   static AuthHelper authHelper = AuthHelper._();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  Future<UserCredential>? get userCredential => null;
   Future<UserCredential> signup(String email, String password) async {
+    UserCredential? userCredential;
     try {
-      UserCredential userCredential = await firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      userCredential = await firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
       return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        CustomDialoug.customDialoug
-            .showCustomDialoug('The password provided is too weak.');
+        CustomDialoug.customDialoug.showCustomDialoug(
+            'The password provided is too weak.\nPlease updated',
+            DialogType.WARNING);
       } else if (e.code == 'email-already-in-use') {
-        CustomDialoug.customDialoug
-            .showCustomDialoug('The account already exists for that email.');
+        CustomDialoug.customDialoug.showCustomDialoug(
+            'The account already exists for that email.',
+            DialogType.INFO_REVERSED);
       }
     } catch (e) {
       print(e);
@@ -28,21 +32,22 @@ class AuthHelper {
     return userCredential!;
   }
 
-  Future<UserCredential> signin(String email, String password) async {
+  Future<bool> signin(String email, String password) async {
     try {
       UserCredential userCredential = await firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
-      return userCredential;
+      await SpHelper.spHelper.saveData("uid", userCredential.user!.uid);
+      return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        CustomDialoug.customDialoug
-            .showCustomDialoug('No user found for that email.');
+        CustomDialoug.customDialoug.showCustomDialoug(
+            '\nNo user found for that email.\n', DialogType.ERROR);
       } else if (e.code == 'wrong-password') {
-        CustomDialoug.customDialoug
-            .showCustomDialoug('Wrong password provided for that user.');
+        CustomDialoug.customDialoug.showCustomDialoug(
+            '\nWrong password provided for that user.\n', DialogType.ERROR);
       }
     }
-    return userCredential!;
+    return false;
   }
 
   // Future<bool> signinWithPhone(String phoneNumber) async {
@@ -82,14 +87,16 @@ class AuthHelper {
   Future<void> resetPassword(String email) async {
     await firebaseAuth.sendPasswordResetEmail(email: email);
     CustomDialoug.customDialoug.showCustomDialoug(
-        'we have sent email for reset password, please check your email');
+        'we have sent email for reset password, please check your email',
+        DialogType.INFO);
   }
 
   Future<void> verifyEmail() async {
     if (firebaseAuth.currentUser != null) {
       await firebaseAuth.currentUser!.sendEmailVerification();
       CustomDialoug.customDialoug.showCustomDialoug(
-          'verification email has been sent, please check your email');
+          'verification email has been sent, please check your email',
+          DialogType.INFO);
     }
   }
 
@@ -100,9 +107,9 @@ class AuthHelper {
   }
 
   Future<void> logoutGoogle() async => await GoogleSignIn().disconnect();
-  bool checkEmailVerification() {
-    return firebaseAuth.currentUser?.emailVerified ?? false;
-  }
+
+  bool checkEmailVerification() =>
+      firebaseAuth.currentUser?.emailVerified ?? false;
 
   Future<bool> signInWithFacebook() async {
     try {

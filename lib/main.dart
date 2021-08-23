@@ -7,6 +7,7 @@ import 'package:chat/ui/auth/loginPage.dart';
 import 'package:chat/ui/auth/reset_password_page.dart';
 import 'package:chat/ui/auth/signup.dart';
 import 'package:chat/ui/home/home_page.dart';
+import 'package:chat/ui/profile/profile.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -38,13 +39,14 @@ class MyApp extends StatelessWidget {
       title: 'Chat',
       navigatorKey: AppRouter.route.navKey,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
       routes: {
         LoginPage.routeName: (_) => LoginPage(),
         SignUpPage.routeName: (_) => SignUpPage(),
         HomePage.routeName: (_) => HomePage(""),
         ResetPassword.routeName: (_) => ResetPassword(),
+        Profile.routeName: (_) => Profile(),
         // PhoneSignInPage.routeName: (_) => PhoneSignInPage(),
       },
       debugShowCheckedModeBanner: false,
@@ -70,7 +72,7 @@ class MyApp extends StatelessWidget {
               ),
             );
           }
-          return SpHelper.spHelper.getData("userId") == null
+          return SpHelper.spHelper.getData("uid") == null
               ? WelcomePage()
               : HomePage("Email");
         },

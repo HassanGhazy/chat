@@ -1,21 +1,20 @@
-import 'package:chat/helpers/app_router.dart';
-import 'package:chat/helpers/custom_dialoug.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:chat/helpers/firestore_helper.dart';
-import 'package:chat/helpers/shared.dart';
-import 'package:chat/ui/auth/loginPage.dart';
-import 'package:chat/ui/auth/modals/user.dart';
-import 'package:chat/ui/home/home_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
+import '../helpers/app_router.dart';
+import '../helpers/custom_dialoug.dart';
+import '../helpers/shared.dart';
+import '../ui/auth/loginPage.dart';
+import '../ui/home/home_page.dart';
 import '../helpers/auth_helper.dart';
 import 'package:flutter/material.dart';
 
 class AuthProvider with ChangeNotifier {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  TextEditingController firstName = TextEditingController();
-  TextEditingController lastName = TextEditingController();
-  TextEditingController country = TextEditingController();
+  // TextEditingController firstName = TextEditingController();
+  // TextEditingController lastName = TextEditingController();
+  // TextEditingController country = TextEditingController();
+
   // TextEditingController phoneNumber = TextEditingController();
   // TextEditingController smsCode = TextEditingController();
   // String uid = "";
@@ -30,20 +29,14 @@ class AuthProvider with ChangeNotifier {
       loading = true;
       notifyListeners();
 
-      UserCredential userCredential =
-          await AuthHelper.authHelper.signup(email.text, password.text);
-      UserModal user = UserModal(
-        id: userCredential.user!.uid,
-        email: email.text,
-        firstName: firstName.text,
-        lastName: lastName.text,
-        country: country.text,
-      );
-      print('firstName ${firstName.text}');
-      await FireStoreHelper.fireStoreHelper.addUserToFirestore(user);
+      await AuthHelper.authHelper.signup(email.text, password.text);
       await AuthHelper.authHelper.verifyEmail();
       await AuthHelper.authHelper.logoutEmail();
+
       AppRouter.route.removeUntilScreen(LoginPage());
+      CustomDialoug.customDialoug.showCustomDialoug(
+          "Successfully Register\nWe sent an email to your account to verify from your account\nPlease check your mail",
+          DialogType.SUCCES);
     } on Exception catch (e) {
       print(e);
     } finally {
@@ -55,29 +48,35 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> login() async {
     if (email.text == "" || password.text == "") {
-      CustomDialoug.customDialoug.showCustomDialoug('some of fields is empty');
+      CustomDialoug.customDialoug
+          .showCustomDialoug('some of fields is empty', DialogType.ERROR);
     } else {
       loading = true;
       notifyListeners();
-      UserCredential user =
+
+      bool exist =
           await AuthHelper.authHelper.signin(email.text, password.text);
 
       // uid = user.user!.uid;
       bool isVerifiedEmail = AuthHelper.authHelper.checkEmailVerification();
-      // if (isVerifiedEmail) {
-      await FireStoreHelper.fireStoreHelper
-          .getUserFromFirestore(user.user!.uid);
-      SpHelper.spHelper.saveData("userId", user.user!.uid);
-      AppRouter.route.removeUntilScreen(HomePage("Email"));
-      // } else {
-      //   CustomDialoug.customDialoug.showCustomDialoug(
-      //       'You have to verify your email, press ok to send another email',
-      //       sendVericiafion);
-      // }
+      if (isVerifiedEmail) {
+        String uid = SpHelper.spHelper.getData('uid') ?? "";
+        String filledProfile = SpHelper.spHelper.getData('filledProfile') ?? "";
+        if (uid != "" && filledProfile != "")
+          await FireStoreHelper.fireStoreHelper.getUserFromFirestore(uid);
+        // Provider.of<UserProvider>(context, listen: false).email = email.text;
+        AppRouter.route.removeUntilScreen(HomePage("Email"));
+      } else {
+        if (exist) {
+          CustomDialoug.customDialoug.showCustomDialoug(
+              'You have to verify your email, press ok to send another email',
+              DialogType.INFO,
+              sendVericiafion);
+        }
+      }
     }
     loading = false;
     notifyListeners();
-    resetControllers();
   }
 
   // Future<void> loginWithPhone() async {
@@ -100,7 +99,8 @@ class AuthProvider with ChangeNotifier {
     if (success) {
       AppRouter.route.removeUntilScreen(HomePage("Google"));
     } else {
-      CustomDialoug.customDialoug.showCustomDialoug('Failed to sign In');
+      CustomDialoug.customDialoug
+          .showCustomDialoug('Failed to sign In', DialogType.ERROR);
     }
   }
 
@@ -109,7 +109,8 @@ class AuthProvider with ChangeNotifier {
     if (success) {
       AppRouter.route.removeUntilScreen(HomePage("Facebook"));
     } else {
-      CustomDialoug.customDialoug.showCustomDialoug('Failed to sign In');
+      CustomDialoug.customDialoug
+          .showCustomDialoug('Failed to sign In', DialogType.ERROR);
     }
   }
 
@@ -124,19 +125,20 @@ class AuthProvider with ChangeNotifier {
     resetControllers();
   }
 
-  logoutEmail() async {
-    await AuthHelper.authHelper.logoutEmail();
-    await SpHelper.spHelper.removeKey("userId");
-    AppRouter.route.removeUntilNamed(LoginPage.routeName);
-  }
-
-  logoutGoogle() async {
-    await AuthHelper.authHelper.logoutGoogle();
-    AppRouter.route.removeUntilNamed(LoginPage.routeName);
-  }
-
-  logoutFacebook() async {
-    await AuthHelper.authHelper.logoutFacebook();
+  logout(String type) async {
+    switch (type) {
+      case "Email":
+        await AuthHelper.authHelper.logoutEmail();
+        await SpHelper.spHelper.removeKey("uid");
+        break;
+      case "Google":
+        await AuthHelper.authHelper.logoutGoogle();
+        break;
+      case "Facebook":
+        await AuthHelper.authHelper.logoutFacebook();
+        break;
+      default:
+    }
     AppRouter.route.removeUntilNamed(LoginPage.routeName);
   }
 }

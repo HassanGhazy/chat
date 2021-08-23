@@ -1,6 +1,9 @@
+import 'package:chat/helpers/firestore_helper.dart';
+import 'package:chat/helpers/shared.dart';
 import 'package:chat/provider/auth_provider.dart';
 import 'package:chat/provider/user_provider.dart';
-import 'package:chat/ui/auth/modals/user.dart';
+import 'package:chat/ui/auth/modals/user_modal.dart';
+import 'package:chat/widgets/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,26 +31,28 @@ class _HomePageState extends State<HomePage> {
       loading = false;
       setState(() {});
     });
+
+    // await UserProvider().getCurrentUser().then((value) =>
+    //     Provider.of<UserProvider>(context, listen: false).dataUser = value);
   }
 
   @override
   Widget build(BuildContext context) {
+    String uid = SpHelper.spHelper.getData('uid') ?? "";
+    String filledProfile = SpHelper.spHelper.getData('filledProfile') ?? "";
+    if (uid != "" && filledProfile != "")
+      FireStoreHelper.fireStoreHelper.getUserFromFirestore(uid).then((value) =>
+          Provider.of<UserProvider>(context, listen: false).dataUser = value);
+
     return Scaffold(
+      drawer: CustomDrawer(),
       appBar: AppBar(
         title: Text("Home"),
         actions: [
           IconButton(
               onPressed: () {
-                if (widget.type == "Email") {
-                  Provider.of<AuthProvider>(context, listen: false)
-                      .logoutEmail();
-                } else if (widget.type == "Google") {
-                  Provider.of<AuthProvider>(context, listen: false)
-                      .logoutGoogle();
-                } else {
-                  Provider.of<AuthProvider>(context, listen: false)
-                      .logoutFacebook();
-                }
+                Provider.of<AuthProvider>(context, listen: false)
+                    .logout(widget.type);
               },
               icon: Icon(Icons.logout))
         ],
