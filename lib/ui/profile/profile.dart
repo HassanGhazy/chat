@@ -9,8 +9,10 @@ import 'package:chat/helpers/custom_progress.dart';
 import 'package:chat/helpers/shared.dart';
 import 'package:chat/provider/auth_provider.dart';
 import 'package:chat/provider/user_provider.dart';
+import 'package:chat/ui/auth/modals/country_modal.dart';
 import 'package:chat/ui/auth/modals/user_modal.dart';
 import 'package:chat/ui/home/home_page.dart';
+import 'package:chat/ui/profile/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -141,7 +143,51 @@ class _ProfileState extends State<Profile> {
                   textEditingController: _email, isEnable: false),
               CustomTextField("First Name", textEditingController: _firstName),
               CustomTextField("Last Name", textEditingController: _lastName),
-              CustomTextField("Country", textEditingController: _country),
+              // CustomTextField("Country", textEditingController: _country),
+              // Container(
+              //   padding: const EdgeInsets.all(5),
+              //   color: Colors.orange,
+              //   child: DropdownButton<CountryModal>(
+              //     isExpanded: true,
+              //     underline: Container(),
+              //     onChanged: (CountryModal? value) =>
+              //         user.selectCountry(value!),
+              //     items: user.countries.map((e) {
+              //       return DropdownMenuItem<CountryModal>(
+              //         child: Text(
+              //           e.name!,
+              //           style: TextStyle(color: Colors.black),
+              //         ),
+              //         value: e,
+              //       );
+              //     }).toList(),
+              //   ),
+              // ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  color: const Color(0xfff3f3f4),
+                  child: DropdownButton<CountryModal>(
+                    isExpanded: true,
+                    underline: Container(),
+                    onChanged: (value) {
+                      setState(() {});
+                      user.selectCountry(value!);
+                    },
+                    items: user.countries.map((CountryModal? e) {
+                      return DropdownMenuItem<CountryModal>(
+                        child: Text(
+                          e!.name!,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        value: e,
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+              CustomDropDown(user, "String"),
               const SizedBox(height: 20),
               ElevatedButton(
                   onPressed: () async {

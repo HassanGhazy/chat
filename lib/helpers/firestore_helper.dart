@@ -1,3 +1,4 @@
+import 'package:chat/ui/auth/modals/country_modal.dart';
 import 'package:chat/ui/auth/modals/user_modal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -26,5 +27,18 @@ class FireStoreHelper {
         docs.map((e) => UserModal.fromMap(e.data())).toList();
 
     return users;
+  }
+
+  Future<List<CountryModal>> getAllCountries() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await firebaseFirestore.collection('Countries').get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = querySnapshot.docs;
+    List<CountryModal> countries = docs.map((e) {
+      Map<String, dynamic> map = e.data();
+      map['id'] = e.id;
+      return CountryModal.fromMap(map);
+    }).toList();
+
+    return countries;
   }
 }
