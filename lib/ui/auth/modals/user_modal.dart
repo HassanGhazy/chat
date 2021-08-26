@@ -8,6 +8,7 @@ class UserModal {
   String? firstName;
   String? lastName;
   String? country;
+  String? city;
   String? photoPath;
   UserModal({
     @required this.id,
@@ -15,6 +16,7 @@ class UserModal {
     @required this.firstName,
     @required this.lastName,
     @required this.country,
+    @required this.city,
     @required this.photoPath,
   });
 
@@ -25,6 +27,7 @@ class UserModal {
       'firstName': this.firstName,
       'lastName': this.lastName,
       'country': this.country,
+      'city': this.city,
       'photoPath': this.photoPath,
     };
   }
@@ -35,6 +38,7 @@ class UserModal {
     this.firstName = map['firstName'];
     this.lastName = map['lastName'];
     this.country = map['country'];
+    this.city = map['city'];
     this.photoPath = map['photoPath'];
   }
 }

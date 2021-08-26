@@ -10,6 +10,12 @@ class AuthHelper {
   static AuthHelper authHelper = AuthHelper._();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
+  String getUid() {
+    return firebaseAuth.currentUser == null
+        ? ""
+        : firebaseAuth.currentUser!.uid;
+  }
+
   Future<UserCredential> signup(String email, String password) async {
     UserCredential? userCredential;
     try {
@@ -140,5 +146,12 @@ class AuthHelper {
     } on Exception catch (_) {}
 
     return false;
+  }
+
+  bool checkUserLoggin() {
+    if (firebaseAuth.currentUser == null) {
+      return false;
+    }
+    return true;
   }
 }

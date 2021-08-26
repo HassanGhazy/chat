@@ -1,3 +1,4 @@
+import 'package:chat/helpers/auth_helper.dart';
 import 'package:chat/ui/auth/modals/country_modal.dart';
 import 'package:chat/ui/auth/modals/user_modal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,10 +14,11 @@ class FireStoreHelper {
         .set(userModal.toMap());
   }
 
-  Future<Map<String, dynamic>> getUserFromFirestore(String uid) async {
+  Future<Map<String, dynamic>> getUserFromFirestore() async {
+    String uid = AuthHelper.authHelper.getUid();
     DocumentSnapshot<Map<String, dynamic>> currentUser =
         await firebaseFirestore.collection('User').doc(uid).get();
-    return currentUser.data()!;
+    return currentUser.data() ?? {};
   }
 
   Future<List<UserModal>> getAllUsersFromFirestore() async {

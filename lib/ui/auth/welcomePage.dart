@@ -4,6 +4,7 @@ import 'package:chat/ui/auth/Widget/welcome_widget.dart';
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatefulWidget {
+  static const routeName = "/welcome-page";
   @override
   _WelcomePageState createState() => _WelcomePageState();
 }

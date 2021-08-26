@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:chat/helpers/firestore_helper.dart';
+import 'package:chat/ui/auth/welcomePage.dart';
 import '../helpers/app_router.dart';
 import '../helpers/custom_dialoug.dart';
 import '../helpers/shared.dart';
@@ -46,6 +47,10 @@ class AuthProvider with ChangeNotifier {
     resetControllers();
   }
 
+  String getCurrentUid() {
+    return AuthHelper.authHelper.getUid();
+  }
+
   Future<void> login() async {
     if (email.text == "" || password.text == "") {
       CustomDialoug.customDialoug
@@ -60,10 +65,7 @@ class AuthProvider with ChangeNotifier {
       // uid = user.user!.uid;
       bool isVerifiedEmail = AuthHelper.authHelper.checkEmailVerification();
       if (isVerifiedEmail) {
-        String uid = SpHelper.spHelper.getData('uid') ?? "";
-        String filledProfile = SpHelper.spHelper.getData('filledProfile') ?? "";
-        if (uid != "" && filledProfile != "")
-          await FireStoreHelper.fireStoreHelper.getUserFromFirestore(uid);
+        await FireStoreHelper.fireStoreHelper.getUserFromFirestore();
         // Provider.of<UserProvider>(context, listen: false).email = email.text;
         AppRouter.route.removeUntilScreen(HomePage("Email"));
       } else {
@@ -140,5 +142,13 @@ class AuthProvider with ChangeNotifier {
       default:
     }
     AppRouter.route.removeUntilNamed(LoginPage.routeName);
+  }
+
+  void checkLoggin() {
+    bool isLog = AuthHelper.authHelper.checkUserLoggin();
+    if (isLog) {
+      AppRouter.route.removeUntilNamed(HomePage.routeName);
+    }
+    AppRouter.route.removeUntilNamed(WelcomePage.routeName);
   }
 }

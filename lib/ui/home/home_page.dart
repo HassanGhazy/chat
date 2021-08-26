@@ -1,5 +1,4 @@
 import 'package:chat/helpers/firestore_helper.dart';
-import 'package:chat/helpers/shared.dart';
 import 'package:chat/provider/auth_provider.dart';
 import 'package:chat/provider/user_provider.dart';
 import 'package:chat/ui/auth/modals/user_modal.dart';
@@ -38,11 +37,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    String uid = SpHelper.spHelper.getData('uid') ?? "";
-    String filledProfile = SpHelper.spHelper.getData('filledProfile') ?? "";
-    if (uid != "" && filledProfile != "")
-      FireStoreHelper.fireStoreHelper.getUserFromFirestore(uid).then((value) =>
-          Provider.of<UserProvider>(context, listen: false).dataUser = value);
+    FireStoreHelper.fireStoreHelper.getUserFromFirestore().then((value) =>
+        Provider.of<UserProvider>(context, listen: false).dataUser = value);
 
     return Scaffold(
       drawer: CustomDrawer(),

@@ -1,5 +1,6 @@
 import 'package:chat/helpers/app_router.dart';
 import 'package:chat/helpers/shared.dart';
+import 'package:chat/helpers/sizeConfig.dart';
 import 'package:chat/provider/auth_provider.dart';
 import 'package:chat/provider/user_provider.dart';
 import 'package:chat/ui/auth/loginPage.dart';
@@ -7,7 +8,8 @@ import 'package:chat/ui/auth/loginPage.dart';
 import 'package:chat/ui/auth/reset_password_page.dart';
 import 'package:chat/ui/auth/signup.dart';
 import 'package:chat/ui/home/home_page.dart';
-import 'package:chat/ui/profile/profile.dart';
+import 'package:chat/ui/introduction.dart';
+import 'package:chat/ui/profile.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,6 +49,7 @@ class MyApp extends StatelessWidget {
         HomePage.routeName: (_) => HomePage(""),
         ResetPassword.routeName: (_) => ResetPassword(),
         Profile.routeName: (_) => Profile(),
+        WelcomePage.routeName: (_) => WelcomePage(),
         // PhoneSignInPage.routeName: (_) => PhoneSignInPage(),
       },
       debugShowCheckedModeBanner: false,
@@ -72,8 +75,14 @@ class MyApp extends StatelessWidget {
               ),
             );
           }
-          return SpHelper.spHelper.getData("uid") == null
-              ? WelcomePage()
+          SizeConfig.sizeConfig.onInit(context);
+
+          return Provider.of<AuthProvider>(context, listen: false)
+                      .getCurrentUid() ==
+                  ""
+              ? SpHelper.spHelper.getData("firstTime") == "No"
+                  ? WelcomePage()
+                  : Introduction()
               : HomePage("Email");
         },
       ),
