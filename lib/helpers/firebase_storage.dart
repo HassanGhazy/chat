@@ -17,4 +17,14 @@ class FireBaseStorageHelper {
     String imageUrl = await reference.getDownloadURL();
     return imageUrl;
   }
+
+  Future<String> uploadImageToChat(File file) async {
+    String filePath = file.path;
+    String fileName = filePath.split('/').last;
+    String path = "images/chats/$fileName";
+    Reference reference = firebaseStorage.ref(path);
+    await reference.putFile(file);
+    String imageUrl = await reference.getDownloadURL();
+    return imageUrl;
+  }
 }

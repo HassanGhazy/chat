@@ -108,12 +108,14 @@ class Profile extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () async {
                       try {
+                        user.busy();
                         String? id = auth.getCurrentUid();
-                        print(user.file);
-                        String imageUrl = await FireBaseStorageHelper
-                            .fireBaseStorageHelper
-                            .uploadImage(user.file!);
-                        print(imageUrl);
+
+                        String? imageUrl;
+                        if (user.file != null)
+                          imageUrl = await FireBaseStorageHelper
+                              .fireBaseStorageHelper
+                              .uploadImage(user.file!);
                         UserModal userModal = UserModal(
                           id: id,
                           email: _email.text,
@@ -123,9 +125,8 @@ class Profile extends StatelessWidget {
                           city: user.currentCity,
                           photoPath: user.file == null
                               ? user.dataUser['photoPath']
-                              : imageUrl,
+                              : imageUrl!,
                         );
-                        user.loading = true;
 
                         await Provider.of<UserProvider>(context, listen: false)
                             .addUser(userModal);
@@ -137,7 +138,7 @@ class Profile extends StatelessWidget {
                         CustomDialoug.customDialoug.showCustomDialoug(
                             "Something is wrong", DialogType.ERROR);
                       } finally {
-                        user.loading = false;
+                        user.busy();
                       }
                     },
                     child: user.loading

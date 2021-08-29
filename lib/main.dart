@@ -7,6 +7,8 @@ import 'package:chat/ui/auth/loginPage.dart';
 // import 'package:chat/ui/auth/phone_sign_in_page.dart';
 import 'package:chat/ui/auth/reset_password_page.dart';
 import 'package:chat/ui/auth/signup.dart';
+import 'package:chat/ui/chat/chat_page.dart';
+import 'package:chat/ui/chat/full_image.dart';
 import 'package:chat/ui/home/home_page.dart';
 import 'package:chat/ui/introduction.dart';
 import 'package:chat/ui/profile.dart';
@@ -50,7 +52,8 @@ class MyApp extends StatelessWidget {
         ResetPassword.routeName: (_) => ResetPassword(),
         Profile.routeName: (_) => Profile(),
         WelcomePage.routeName: (_) => WelcomePage(),
-        // PhoneSignInPage.routeName: (_) => PhoneSignInPage(),
+        ChatPage.routeName: (_) => ChatPage(),
+        FullImage.routeName: (_) => FullImage(src: "", tag: ""),
       },
       debugShowCheckedModeBanner: false,
       home: FutureBuilder(

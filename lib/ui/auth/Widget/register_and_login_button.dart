@@ -1,5 +1,6 @@
 import 'package:chat/helpers/custom_progress.dart';
 import 'package:chat/provider/auth_provider.dart';
+import 'package:chat/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,9 +34,9 @@ class RegisterAndLoginButton extends StatelessWidget {
   final int _action; //1 => login - 2 => register
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
-      builder: (context, provider, child) => GestureDetector(
-        onTap: () {
+    return Consumer2<AuthProvider, UserProvider>(
+      builder: (context, provider, user, child) => GestureDetector(
+        onTap: () async {
           provider.email = _email;
           provider.password = _password;
           // provider.firstName = _firstName;
@@ -44,6 +45,7 @@ class RegisterAndLoginButton extends StatelessWidget {
           // provider.phoneNumber = _phoneNumber;
           if (_action == 1) {
             provider.login();
+            await user.getAllUers();
           } else if (_action == 2) {
             provider.register();
           } else if (_action == 3) {

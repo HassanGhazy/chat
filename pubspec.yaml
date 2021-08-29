@@ -24,6 +24,7 @@ dependencies:
   introduction_screen: ^2.1.0
   path_provider: ^2.0.2
   firebase_storage: "^10.0.2"
+  timeago: ^3.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -48,6 +49,7 @@ flutter:
     - assets/images/user.png
     - assets/images/blackUser.png
     - assets/images/Decoration.png
+    - assets/images/welcome.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

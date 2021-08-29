@@ -10,4 +10,11 @@ class CustomProgress {
       size: 50.0,
     );
   }
+
+  SpinKitHourGlass spinKitHourGlass() {
+    return SpinKitHourGlass(
+      color: Colors.white,
+      size: 50.0,
+    );
+  }
 }

@@ -7,6 +7,15 @@ class FireStoreHelper {
   FireStoreHelper._();
   static FireStoreHelper fireStoreHelper = FireStoreHelper._();
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
+  addMessage(Map<String, dynamic> map) async {
+    firebaseFirestore.collection('Chats').add(map);
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getFirestoreStream() {
+    return firebaseFirestore.collection('Chats').orderBy('time').snapshots();
+  }
+
   Future<void> addUserToFirestore(UserModal userModal) async {
     await firebaseFirestore
         .collection('User')
@@ -19,6 +28,12 @@ class FireStoreHelper {
     DocumentSnapshot<Map<String, dynamic>> currentUser =
         await firebaseFirestore.collection('User').doc(uid).get();
     return currentUser.data() ?? {};
+  }
+
+  Future<String> getImageFromFirestore(String uid) async {
+    DocumentSnapshot<Map<String, dynamic>> currentUser =
+        await firebaseFirestore.collection('User').doc(uid).get();
+    return currentUser.data()!['photoPath'];
   }
 
   Future<List<UserModal>> getAllUsersFromFirestore() async {

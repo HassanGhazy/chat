@@ -62,11 +62,9 @@ class AuthProvider with ChangeNotifier {
       bool exist =
           await AuthHelper.authHelper.signin(email.text, password.text);
 
-      // uid = user.user!.uid;
       bool isVerifiedEmail = AuthHelper.authHelper.checkEmailVerification();
       if (isVerifiedEmail) {
         await FireStoreHelper.fireStoreHelper.getUserFromFirestore();
-        // Provider.of<UserProvider>(context, listen: false).email = email.text;
         AppRouter.route.removeUntilScreen(HomePage("Email"));
       } else {
         if (exist) {

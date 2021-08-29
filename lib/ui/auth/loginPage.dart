@@ -51,22 +51,14 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   SizedBox(height: height * .2),
                   const WelcomeTextWidget(Color(0xffe46b10)),
-
                   const SizedBox(height: 50),
                   CustomTextField("Email", textEditingController: _email),
                   CustomTextField("Password",
                       isPassword: true, textEditingController: _password),
                   const SizedBox(height: 20),
-                  // _divider(),
-                  // CustomTextField("Login with your Phone",
-                  //     textEditingController: _phone),
                   RegisterAndLoginButton(
                     email: _email,
                     password: _password,
-                    // firstName: TextEditingController(),
-                    // lastName: TextEditingController(),
-                    // country: TextEditingController(),
-                    // phoneNumber: _phone,
                     title: 'Login',
                     action: 1,
                   ),
