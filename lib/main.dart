@@ -15,6 +15,7 @@ import 'package:chat/ui/profile.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
 import 'ui/auth/welcomePage.dart';
 
@@ -23,7 +24,7 @@ Future<void> main() async {
   await SpHelper.spHelper.initSharedPreferences();
   runApp(
     MultiProvider(
-      providers: [
+      providers: <SingleChildWidget>[
         ChangeNotifierProvider<AuthProvider>(
           create: (_) => AuthProvider(),
         ),
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      routes: {
+      routes: <String, WidgetBuilder>{
         LoginPage.routeName: (_) => LoginPage(),
         SignUpPage.routeName: (_) => SignUpPage(),
         HomePage.routeName: (_) => HomePage(""),
@@ -56,9 +57,9 @@ class MyApp extends StatelessWidget {
         FullImage.routeName: (_) => FullImage(src: "", tag: ""),
       },
       debugShowCheckedModeBanner: false,
-      home: FutureBuilder(
+      home: FutureBuilder<FirebaseApp>(
         future: Firebase.initializeApp(),
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<FirebaseApp> snapshot) {
           if (snapshot.hasError) {
             return Scaffold(
               appBar: AppBar(

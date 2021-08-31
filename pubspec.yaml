@@ -25,9 +25,13 @@ dependencies:
   path_provider: ^2.0.2
   firebase_storage: "^10.0.2"
   timeago: ^3.1.0
+  photo_view: ^0.12.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:           # new
+    sdk: flutter              # new
+  test: ^1.14.4            # new
 
 flutter:
 

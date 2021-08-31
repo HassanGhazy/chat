@@ -4,7 +4,7 @@ import 'package:chat/ui/auth/Widget/welcome_widget.dart';
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatefulWidget {
-  static const routeName = "/welcome-page";
+  static const String routeName = "/welcome-page";
   @override
   _WelcomePageState createState() => _WelcomePageState();
 }
@@ -28,7 +28,7 @@ class _WelcomePageState extends State<WelcomePage> {
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xfffbb448), Color(0xffe46b10)])),
+                colors: const <Color>[Color(0xfffbb448), Color(0xffe46b10)])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
       drawer: CustomDrawer(),
       appBar: AppBar(
         title: Text("Home"),
-        actions: [
+        actions: <Widget>[
           IconButton(
               onPressed: () {
                 Provider.of<AuthProvider>(context, listen: false).logout(type);
@@ -31,7 +31,10 @@ class HomePage extends StatelessWidget {
       ),
       body: Consumer<UserProvider>(builder: (context, user, child) {
         // user.users == null ? CustomProgress.customProgress.showProgressIndicator() :
-        user.getAllUers();
+        if (!user.getAllUser) {
+          user.getAllUers();
+          user.getAllUser = true;
+        }
         return ListView.builder(
           itemBuilder: (context, index) => ListTile(
             title: Text(
@@ -63,6 +66,29 @@ class HomePage extends StatelessWidget {
                 value = user.users[index].id ?? "";
                 return value;
               });
+
+              /// the code below to compute the uid of two users
+              /// you can't just say myUid then the uid of my friend
+              /// because if you loged the collection will be uid + uidFriend
+              /// and if the friend logged the the collection will be uidFriend + uid
+              /// and that's wrong :) meow
+              int p1 = 0;
+              int p2 = 0;
+              final String myUid = user.getUid;
+              final String friendUid = user.friend['id'];
+
+              while (p1 < friendUid.length && p2 < myUid.length) {
+                if (friendUid.codeUnitAt(p1) > myUid.codeUnitAt(p2)) {
+                  user.changeChat(friendUid + myUid);
+                  break;
+                } else if (friendUid.codeUnitAt(p1) < myUid.codeUnitAt(p2)) {
+                  user.changeChat(myUid + friendUid);
+                  break;
+                }
+                p1++;
+                p2++;
+              }
+
               AppRouter.route.pushNamed(ChatPage.routeName, {});
             },
           ),

@@ -21,7 +21,7 @@ class UserModal {
   });
 
   toMap() {
-    return {
+    return <String, dynamic>{
       'id': this.id,
       'email': this.email,
       'firstName': this.firstName,

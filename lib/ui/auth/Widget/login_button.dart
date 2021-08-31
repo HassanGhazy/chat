@@ -7,7 +7,7 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppRouter.route.pushNamed(LoginPage.routeName, {});
+        AppRouter.route.pushNamed(LoginPage.routeName, <String, dynamic>{});
       },
       child: Container(
         width: MediaQuery.of(context).size.width,

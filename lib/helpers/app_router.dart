@@ -24,12 +24,13 @@ class AppRouter {
   }
 
   void removeUntilNamed(String routeName) {
-    navKey.currentState!.pushNamedAndRemoveUntil(routeName, (route) => false);
+    navKey.currentState!
+        .pushNamedAndRemoveUntil(routeName, (Route<dynamic> route) => false);
   }
 
   void removeUntilScreen(Widget screen) {
     navKey.currentState!.pushAndRemoveUntil(
         MaterialPageRoute<void>(builder: (BuildContext _) => screen),
-        (route) => false);
+        (Route<dynamic> route) => false);
   }
 }

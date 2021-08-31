@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 
 class FullImage extends StatelessWidget {
   static const String routeName = '/full-image';
@@ -14,11 +15,10 @@ class FullImage extends StatelessWidget {
         tag: tag,
         child: Center(
           child: Container(
-            height: MediaQuery.of(context).size.height / 2,
-            width: MediaQuery.of(context).size.width / 2,
-            child: Image.network(
-              src,
-              fit: BoxFit.contain,
+            height: MediaQuery.of(context).size.height / 1.5,
+            width: MediaQuery.of(context).size.width / 1.5,
+            child: PhotoView(
+              imageProvider: NetworkImage(src),
             ),
           ),
         ),

@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
         body: Container(
       height: height,
@@ -67,7 +67,8 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        AppRouter.route.pushNamed(ResetPassword.routeName, {});
+                        AppRouter.route.pushNamed(
+                            ResetPassword.routeName, <String, dynamic>{});
                       },
                       child: const Text('Forgot Password ?',
                           style: TextStyle(

@@ -54,11 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     const WelcomeTextWidget(const Color(0xffe46b10)),
                     const SizedBox(height: 50),
                     CustomTextField("Email", textEditingController: _email),
-                    // CustomTextField("First Name",
-                    // textEditingController: _firstName),
-                    // CustomTextField("Last Name",
-                    // textEditingController: _lastName),
-                    // CustomTextField("Country", textEditingController: _country),
+
                     CustomTextField("Password",
                         isPassword: true, textEditingController: _password),
                     const SizedBox(height: 20),

@@ -67,7 +67,7 @@ class AuthHelper {
   //         print(e.credential);
   //         if (e.code == 'invalid-phone-number') {
   //           CustomDialoug.customDialoug
-  //               .showCustomDialoug('The provided phone number is not valid.');
+  //            .showCustomDialoug('The provided phone number is not valid.');
   //         }
   //       },
   //       timeout: const Duration(seconds: 60),
@@ -136,7 +136,7 @@ class AuthHelper {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication googleAuth =
           await googleUser!.authentication;
-      final credential = GoogleAuthProvider.credential(
+      final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );

@@ -25,7 +25,7 @@ class SendMessageWidget extends StatelessWidget {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -45,16 +45,12 @@ class SendMessageWidget extends StatelessWidget {
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
             child: IconButton(
               onPressed: () async {
-                user.loadingPhoto = true;
                 await user.uploadImageToChat();
                 if (user.file != null) {
-                  String? imageUrl;
-                  if (user.file != null) {
-                    imageUrl = await FireBaseStorageHelper.fireBaseStorageHelper
-                        .uploadImageToChat(user.file!);
-                    await user.sendtoFirstore(imageUrl);
-                    user.loadingPhoto = false;
-                  }
+                  String imageUrl = await FireBaseStorageHelper
+                      .fireBaseStorageHelper
+                      .uploadImageToChat(user.file!);
+                  await user.sendtoFirstore('', imageUrl);
                 }
               },
               icon: const Icon(Icons.image),
@@ -68,11 +64,15 @@ class SendMessageWidget extends StatelessWidget {
               onPressed: () async {
                 if (message.text.trim().isNotEmpty) {
                   await user.sendtoFirstore(message.text.trim());
+
                   if (_controller.hasClients)
-                    _controller.animateTo(
-                        _controller.position.maxScrollExtent + 100,
-                        duration: Duration(seconds: 1),
-                        curve: Curves.ease);
+                    Future.delayed(Duration(milliseconds: 100)).then((value) {
+                      _controller.animateTo(
+                          _controller.position.maxScrollExtent + 60,
+                          duration: Duration(seconds: 1),
+                          curve: Curves.ease);
+                    });
+
                   message.clear();
                 }
               },

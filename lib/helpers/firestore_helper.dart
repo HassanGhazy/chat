@@ -8,12 +8,12 @@ class FireStoreHelper {
   static FireStoreHelper fireStoreHelper = FireStoreHelper._();
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
-  addMessage(Map<String, dynamic> map) async {
-    firebaseFirestore.collection('Chats').add(map);
+  addMessage(Map<String, dynamic> map, String uid) async {
+    firebaseFirestore.collection('$uid').add(map);
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getFirestoreStream() {
-    return firebaseFirestore.collection('Chats').orderBy('time').snapshots();
+  Stream<QuerySnapshot<Map<String, dynamic>>> getFirestoreStream(String uid) {
+    return firebaseFirestore.collection('$uid').orderBy('time').snapshots();
   }
 
   Future<void> addUserToFirestore(UserModal userModal) async {
@@ -27,7 +27,7 @@ class FireStoreHelper {
     String uid = AuthHelper.authHelper.getUid();
     DocumentSnapshot<Map<String, dynamic>> currentUser =
         await firebaseFirestore.collection('User').doc(uid).get();
-    return currentUser.data() ?? {};
+    return currentUser.data() ?? <String, dynamic>{};
   }
 
   Future<String> getImageFromFirestore(String uid) async {
@@ -40,8 +40,10 @@ class FireStoreHelper {
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await firebaseFirestore.collection('User').get();
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = querySnapshot.docs;
-    List<UserModal> users =
-        docs.map((e) => UserModal.fromMap(e.data())).toList();
+    List<UserModal> users = docs
+        .map((QueryDocumentSnapshot<Map<String, dynamic>> e) =>
+            UserModal.fromMap(e.data()))
+        .toList();
 
     return users;
   }
@@ -50,7 +52,8 @@ class FireStoreHelper {
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await firebaseFirestore.collection('Countries').get();
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = querySnapshot.docs;
-    List<CountryModal> countries = docs.map((e) {
+    List<CountryModal> countries =
+        docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) {
       Map<String, dynamic> map = e.data();
       map['id'] = e.id;
       return CountryModal.fromMap(map);

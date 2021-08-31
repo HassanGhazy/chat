@@ -35,7 +35,9 @@ class RegisterAndLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer2<AuthProvider, UserProvider>(
-      builder: (context, provider, user, child) => GestureDetector(
+      builder: (BuildContext context, AuthProvider provider, UserProvider user,
+              Widget? child) =>
+          GestureDetector(
         onTap: () async {
           provider.email = _email;
           provider.password = _password;
@@ -71,7 +73,7 @@ class RegisterAndLoginButton extends StatelessWidget {
               gradient: const LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: [Color(0xfffbb448), Color(0xfff7892b)])),
+                  colors: const <Color>[Color(0xfffbb448), Color(0xfff7892b)])),
           child: provider.loading
               ? CustomProgress.customProgress.showProgressIndicator()
               : Text(

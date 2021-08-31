@@ -12,13 +12,6 @@ import 'package:flutter/material.dart';
 class AuthProvider with ChangeNotifier {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  // TextEditingController firstName = TextEditingController();
-  // TextEditingController lastName = TextEditingController();
-  // TextEditingController country = TextEditingController();
-
-  // TextEditingController phoneNumber = TextEditingController();
-  // TextEditingController smsCode = TextEditingController();
-  // String uid = "";
   bool loading = false;
   resetControllers() {
     email.clear();
@@ -36,6 +29,7 @@ class AuthProvider with ChangeNotifier {
 
       AppRouter.route.removeUntilScreen(LoginPage());
       CustomDialoug.customDialoug.showCustomDialoug(
+          // ignore: lines_longer_than_80_chars
           "Successfully Register\nWe sent an email to your account to verify from your account\nPlease check your mail",
           DialogType.SUCCES);
     } on Exception catch (e) {

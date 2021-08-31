@@ -8,7 +8,7 @@ class SizeConfig {
   double? height;
 
   void onInit(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context).size;
+    final Size mediaQuery = MediaQuery.of(context).size;
     this.width = mediaQuery.width;
     this.height = mediaQuery.height;
   }

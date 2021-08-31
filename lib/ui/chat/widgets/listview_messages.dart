@@ -32,6 +32,10 @@ class ListViewMessages extends StatelessWidget {
             user.friend['photoPath'] != null &&
             messages![index]['userId'] != uid;
 
+        bool isTheMessagePhoto = (messages![index]['photo'] != '' ||
+                messages![index]['photo'] != null) &&
+            (messages![index]['message'] == '' ||
+                messages![index]['message'] == null);
         return Padding(
           padding: const EdgeInsets.all(4),
           child: Directionality(
@@ -61,13 +65,13 @@ class ListViewMessages extends StatelessWidget {
                           : Colors.grey[100],
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Uri.parse(messages![index]['message']).isAbsolute
+                    child: isTheMessagePhoto
                         ? GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute<void>(
                                   builder: (BuildContext context) => FullImage(
-                                    src: messages![index]['message'],
+                                    src: messages![index]['photo'],
                                     tag: 'dash$index',
                                   ),
                                 ),
@@ -76,7 +80,7 @@ class ListViewMessages extends StatelessWidget {
                             child: Hero(
                               tag: 'dash$index',
                               transitionOnUserGestures: true,
-                              child: Image.network(messages![index]['message']),
+                              child: Image.network(messages![index]['photo']),
                             ),
                           )
                         : ListTile(

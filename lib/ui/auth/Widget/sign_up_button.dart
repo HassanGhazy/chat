@@ -7,7 +7,7 @@ class SignUpButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppRouter.route.pushNamed(SignUpPage.routeName, {});
+        AppRouter.route.pushNamed(SignUpPage.routeName, <String, dynamic>{});
       },
       child: Container(
         width: MediaQuery.of(context).size.width,

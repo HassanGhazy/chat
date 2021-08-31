@@ -22,7 +22,17 @@ class UserProvider with ChangeNotifier {
     'id': "",
   };
   bool loading = false;
-  bool loadingPhoto = false;
+  // bool loadingPhoto = false;
+
+  String uidOfUserAndFriend = "";
+
+  void changeChat(String newChat) {
+    // new chat mean new uid for me and friend
+    uidOfUserAndFriend = newChat;
+    notifyListeners();
+  }
+
+  bool getAllUser = false;
   List<UserModal> users = <UserModal>[];
   List<CountryModal> countries = <CountryModal>[];
   List<dynamic>? cities = <dynamic>[];
@@ -51,7 +61,7 @@ class UserProvider with ChangeNotifier {
 
   Future<List<UserModal>> getAllUers() async {
     users = await FireStoreHelper.fireStoreHelper.getAllUsersFromFirestore();
-    users.removeWhere((element) => element.id == getUid);
+    users.removeWhere((UserModal element) => element.id == getUid);
     notifyListeners();
     return users;
   }
@@ -88,25 +98,34 @@ class UserProvider with ChangeNotifier {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (imageFile != null) {
       this.file = File(imageFile.path);
-      FireBaseStorageHelper.fireBaseStorageHelper.uploadImageToChat(file!);
+      await FireBaseStorageHelper.fireBaseStorageHelper
+          .uploadImageToChat(file!);
     }
 
     notifyListeners();
   }
 
-  Future<void> sendtoFirstore(String message) async {
-    await FireStoreHelper.fireStoreHelper.addMessage({
-      'message': message,
-      'time': DateTime.now(),
-      'userId': AuthHelper.authHelper.getUid()
-    });
+  Future<void> sendtoFirstore(String message, [String? photo]) async {
+    assert(
+      uidOfUserAndFriend != '',
+      'The id of collection is not null: is not true',
+    );
+    await FireStoreHelper.fireStoreHelper.addMessage(
+      <String, dynamic>{
+        'message': message,
+        'photo': photo ?? '',
+        'time': DateTime.now(),
+        'userId': AuthHelper.authHelper.getUid(),
+      },
+      uidOfUserAndFriend,
+    );
   }
 
   Future<String> getImageFromUid(String uid) async {
     return await FireStoreHelper.fireStoreHelper.getImageFromFirestore(uid);
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getFromFirstore() {
-    return FireStoreHelper.fireStoreHelper.getFirestoreStream();
+  Stream<QuerySnapshot<Map<String, dynamic>>> getFromFirstore(String uid) {
+    return FireStoreHelper.fireStoreHelper.getFirestoreStream(uid);
   }
 }
