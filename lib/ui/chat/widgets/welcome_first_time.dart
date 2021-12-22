@@ -14,6 +14,7 @@ class WelcomeFirstTime extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool nameOfMembersExist =
         user.dataUser['firstName'] != null && user.friend['firstName'] != "";
+    final bool myProfile = user.friend['id'] == user.getUid;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -28,12 +29,18 @@ class WelcomeFirstTime extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         nameOfMembersExist
-            ? CustomText(
-                '${user.dataUser['firstName']} and ${user.friend['firstName']}',
-              )
+            ? myProfile
+                ? Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: CustomText(
+                        'This is your space. Draft messages, list your to-dos, or keep links and files handy. You can also talk to yourself here, but please bear in mind you’ll have to supply both sides of the conversation.'),
+                  )
+                : CustomText(
+                    '${user.dataUser['firstName']} and ${user.friend['firstName']}',
+                  )
             : Container(),
         const SizedBox(height: 20),
-        CustomText('Start chating now')
+        myProfile ? Container() : CustomText('Start chating now')
       ],
     );
   }

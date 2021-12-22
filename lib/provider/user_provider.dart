@@ -61,7 +61,6 @@ class UserProvider with ChangeNotifier {
 
   Future<List<UserModal>> getAllUers() async {
     users = await FireStoreHelper.fireStoreHelper.getAllUsersFromFirestore();
-    users.removeWhere((UserModal element) => element.id == getUid);
     notifyListeners();
     return users;
   }
@@ -70,9 +69,8 @@ class UserProvider with ChangeNotifier {
     return AuthHelper.authHelper.getUid();
   }
 
-  Future<Map<String, dynamic>> getCurrentUser() async {
+  Future<void> getCurrentUser() async {
     dataUser = await FireStoreHelper.fireStoreHelper.getUserFromFirestore();
-    return dataUser;
   }
 
   Future<void> addUser(UserModal userModal) async {
@@ -105,7 +103,8 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> sendtoFirstore(String message, [String? photo]) async {
+  Future<void> sendtoFirstore(String message,
+      [String? photo, String? record]) async {
     assert(
       uidOfUserAndFriend != '',
       'The id of collection is not null: is not true',
@@ -114,6 +113,7 @@ class UserProvider with ChangeNotifier {
       <String, dynamic>{
         'message': message,
         'photo': photo ?? '',
+        'record': record ?? '',
         'time': DateTime.now(),
         'userId': AuthHelper.authHelper.getUid(),
       },
@@ -122,6 +122,10 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<String> getImageFromUid(String uid) async {
+    assert(
+      uid != '',
+      'The uid of collection is not null: is not true',
+    );
     return await FireStoreHelper.fireStoreHelper.getImageFromFirestore(uid);
   }
 

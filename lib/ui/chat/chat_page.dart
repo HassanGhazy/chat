@@ -14,12 +14,11 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (_controller.hasClients) {
-        _controller.animateTo(_controller.position.maxScrollExtent,
-            duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
-      }
-    });
+    Future.delayed(Duration(milliseconds: 100)).then((value) =>
+        (_controller.hasClients)
+            ? _controller.animateTo(_controller.position.maxScrollExtent,
+                duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn)
+            : false);
 
     return Consumer<UserProvider>(
         builder: (BuildContext context, UserProvider user, Widget? child) {

@@ -19,7 +19,7 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserProvider user = Provider.of<UserProvider>(context, listen: false);
     final AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
-
+    print(user.dataUser);
     final TextEditingController _email =
         TextEditingController(text: user.dataUser['email'] ?? auth.email.text);
     final TextEditingController _firstName =
@@ -54,8 +54,6 @@ class Profile extends StatelessWidget {
                               ? Image.network(user.dataUser['photoPath'])
                               : Image.file(user.file!, fit: BoxFit.cover)),
                 ),
-                CustomTextField("Email",
-                    textEditingController: _email, isEnable: false),
                 CustomTextField("First Name",
                     textEditingController: _firstName),
                 CustomTextField("Last Name", textEditingController: _lastName),

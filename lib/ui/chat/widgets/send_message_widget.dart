@@ -39,6 +39,7 @@ class SendMessageWidget extends StatelessWidget {
               ),
             ),
           ),
+
           Container(
             padding: const EdgeInsets.all(10),
             margin: const EdgeInsets.all(5),
